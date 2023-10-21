@@ -33,6 +33,9 @@ import io
 import base64
 import logging
 import re
+import model_conn as mc
+
+mc.main()
 
 
 # FastAPI 애플리케이션 초기화
