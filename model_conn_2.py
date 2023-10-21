@@ -38,7 +38,7 @@ def fetch_recent_logs(length=avg_len):
             FLOWCOOLFLOWRATE, FLOWCOOLPRESSURE, ETCHGASCHANNEL1READBACK, ETCHPBNGASREADBACK,
             FIXTURETILTANGLE, ROTATIONSPEED, ACTUALROTATIONANGLE,
             ETCHSOURCEUSAGE, ETCHAUXSOURCETIMER, ETCHAUX2SOURCETIMER,
-            ACTUALSTEPDURATION FROM input_data ORDER BY input_time DESC LIMIT {length}'''
+            ACTUALSTEPDURATION FROM input_data_2 ORDER BY input_time DESC LIMIT {length}'''
             cursor.execute(sql)
             results = cursor.fetchall()
     finally:
@@ -66,7 +66,7 @@ def fetch_recent_logs_for_multi(length=avg_len):
             # 가장 최근의 데이터부터 지정한 길이만큼 가져오는 SQL 쿼리
             sql = f'''SELECT ACTUALROTATIONANGLE, ACTUALSTEPDURATION, ETCHBEAMCURRENT, ETCHGASCHANNEL1READBACK, 
               ETCHPBNGASREADBACK, ETCHSOURCEUSAGE, FIXTURETILTANGLE, FLOWCOOLFLOWRATE, FLOWCOOLPRESSURE, 
-              IONGAUGEPRESSURE FROM input_data ORDER BY input_time DESC LIMIT {length}'''
+              IONGAUGEPRESSURE FROM input_data_2 ORDER BY input_time DESC LIMIT {length}'''
             cursor.execute(sql)
             results = cursor.fetchall()
     finally:
@@ -138,7 +138,7 @@ def insert_single_data(connection, single_data):
             # 현재 시간 가져오기
             current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             # 데이터 삽입 SQL.
-            sql = f'''INSERT INTO input_data (time, Tool, stage, Lot, runnum, recipe, recipe_step,
+            sql = f'''INSERT INTO input_data_2 (time, Tool, stage, Lot, runnum, recipe, recipe_step,
        IONGAUGEPRESSURE, ETCHBEAMVOLTAGE, ETCHBEAMCURRENT,
        ETCHSUPPRESSORVOLTAGE, ETCHSUPPRESSORCURRENT, FLOWCOOLFLOWRATE,
        FLOWCOOLPRESSURE, ETCHGASCHANNEL1READBACK, ETCHPBNGASREADBACK,
@@ -159,7 +159,7 @@ def insert_single_rul_data(connection, single_data, current_time):
             current_time = current_time
             
             # 데이터 삽입 SQL.
-            sql = f'''INSERT INTO rul(rul_time,input_time) VALUES (%s,"{current_time}")'''
+            sql = f'''INSERT INTO rul_2(rul_time,input_time) VALUES (%s,"{current_time}")'''
             cursor.execute(sql, single_data)
         connection.commit()
     except Exception as e:
@@ -173,7 +173,7 @@ def insert_single_multi_data(connection, single_data, current_time):
             current_time = current_time
             
             # 데이터 삽입 SQL.
-            sql = f'''INSERT INTO multi(multi_pred,input_time) VALUES (%s,"{current_time}")'''
+            sql = f'''INSERT INTO multi_2(multi_pred,input_time) VALUES (%s,"{current_time}")'''
             cursor.execute(sql, single_data)
         connection.commit()
     except Exception as e:
